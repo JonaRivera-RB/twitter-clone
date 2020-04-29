@@ -18,6 +18,9 @@
 		1362B3EF2457F2330092D879 /* NotififcationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3EE2457F2330092D879 /* NotififcationVC.swift */; };
 		1362B3F12457F24B0092D879 /* ConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3F02457F24B0092D879 /* ConversationVC.swift */; };
 		1362B3F32457FE0E0092D879 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3F22457FE0E0092D879 /* Extensions.swift */; };
+		1362B3FC24592E320092D879 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3FB24592E320092D879 /* LoginVC.swift */; };
+		1362B3FE24592EE60092D879 /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3FD24592EE60092D879 /* RegistrationVC.swift */; };
+		1362B401245938C10092D879 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B400245938C10092D879 /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		1362B3EE2457F2330092D879 /* NotififcationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotififcationVC.swift; sourceTree = "<group>"; };
 		1362B3F02457F24B0092D879 /* ConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationVC.swift; sourceTree = "<group>"; };
 		1362B3F22457FE0E0092D879 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1362B3FB24592E320092D879 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		1362B3FD24592EE60092D879 /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
+		1362B400245938C10092D879 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,7 @@
 		1362B3DF2457EE860092D879 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				1362B3FA24592E190092D879 /* Authentication */,
 				1362B3E62457EFB10092D879 /* MainTabController.swift */,
 				1362B3EA2457F20E0092D879 /* FeedVC.swift */,
 				1362B3EC2457F2290092D879 /* ExploreVC.swift */,
@@ -125,9 +132,27 @@
 		1362B3E52457EEB80092D879 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				1362B3FF245938B30092D879 /* New Group */,
 				1362B3F22457FE0E0092D879 /* Extensions.swift */,
+				1362B400245938C10092D879 /* Utilities.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		1362B3FA24592E190092D879 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				1362B3FB24592E320092D879 /* LoginVC.swift */,
+				1362B3FD24592EE60092D879 /* RegistrationVC.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		1362B3FF245938B30092D879 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,9 +228,12 @@
 			files = (
 				1362B3EF2457F2330092D879 /* NotififcationVC.swift in Sources */,
 				1362B3F12457F24B0092D879 /* ConversationVC.swift in Sources */,
+				1362B401245938C10092D879 /* Utilities.swift in Sources */,
 				1362B3EB2457F20E0092D879 /* FeedVC.swift in Sources */,
+				1362B3FE24592EE60092D879 /* RegistrationVC.swift in Sources */,
 				1362B3F32457FE0E0092D879 /* Extensions.swift in Sources */,
 				1362B3C72457EE5E0092D879 /* AppDelegate.swift in Sources */,
+				1362B3FC24592E320092D879 /* LoginVC.swift in Sources */,
 				1362B3ED2457F2290092D879 /* ExploreVC.swift in Sources */,
 				1362B3E72457EFB10092D879 /* MainTabController.swift in Sources */,
 				1362B3C92457EE5E0092D879 /* SceneDelegate.swift in Sources */,
