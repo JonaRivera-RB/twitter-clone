@@ -7,10 +7,20 @@
 //
 
 import UIKit
+import Firebase
 
 class MainTabController: UITabBarController {
 
     //MARK: - Properties
+    
+    var user: User? {
+        didSet {
+            guard let nav = viewControllers?[0] as? UINavigationController else { return }
+            guard let feed = nav.viewControllers.first as? FeedVC else { return }
+            
+            feed.user = user
+        }
+    }
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -24,13 +34,38 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViewController()
-        configureUI()
+        authenticateUserConfigureUI()
+    }
+    
+    
+    //MARK: - API
+    
+    func getUSerInfo() {
+        UserService.shared.fetchUser { user in
+            self.user = user
+        }
+    }
+    func authenticateUserConfigureUI() {
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginVC())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
+        }else {
+            configureViewController()
+            configureUI()
+            getUSerInfo()
+        }
     }
     
     //MARK: - Selectors
     @objc func actionButtonTapped() {
-        print(124)
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("DEBUG : \(error.localizedDescription)")
+        }
     }
     
     //MARK: - Helpers

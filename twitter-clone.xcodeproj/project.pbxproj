@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		131962A3245DE88400B52538 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131962A2245DE88400B52538 /* UserService.swift */; };
+		131962A5245DEB7200B52538 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131962A4245DEB7200B52538 /* User.swift */; };
 		1362B3C72457EE5E0092D879 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3C62457EE5E0092D879 /* AppDelegate.swift */; };
 		1362B3C92457EE5E0092D879 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B3C82457EE5E0092D879 /* SceneDelegate.swift */; };
 		1362B3D02457EE660092D879 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1362B3CF2457EE660092D879 /* Assets.xcassets */; };
@@ -23,10 +25,13 @@
 		1362B401245938C10092D879 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1362B400245938C10092D879 /* Utilities.swift */; };
 		139335C4245C938F008D9CE5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 139335C3245C938F008D9CE5 /* GoogleService-Info.plist */; };
 		139335C6245CA5AA008D9CE5 /* Constans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139335C5245CA5AA008D9CE5 /* Constans.swift */; };
+		139335C8245CB5A4008D9CE5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139335C7245CB5A4008D9CE5 /* AuthService.swift */; };
 		87AC7FB382DA4DF37D87D207 /* Pods_twitter_clone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACCE9B5EC559154FF12CAF1 /* Pods_twitter_clone.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		131962A2245DE88400B52538 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		131962A4245DEB7200B52538 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1362B3C32457EE5E0092D879 /* twitter-clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "twitter-clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1362B3C62457EE5E0092D879 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1362B3C82457EE5E0092D879 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +50,7 @@
 		1362B400245938C10092D879 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		139335C3245C938F008D9CE5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		139335C5245CA5AA008D9CE5 /* Constans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constans.swift; sourceTree = "<group>"; };
+		139335C7245CB5A4008D9CE5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		2D5246122F3FB23CB7C1ECE3 /* Pods-twitter-clone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twitter-clone.release.xcconfig"; path = "Target Support Files/Pods-twitter-clone/Pods-twitter-clone.release.xcconfig"; sourceTree = "<group>"; };
 		60F1DDA5A27AA30F859C956B /* Pods-twitter-clone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twitter-clone.debug.xcconfig"; path = "Target Support Files/Pods-twitter-clone/Pods-twitter-clone.debug.xcconfig"; sourceTree = "<group>"; };
 		FACCE9B5EC559154FF12CAF1 /* Pods_twitter_clone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_twitter_clone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +109,7 @@
 		1362B3DB2457EE7E0092D879 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				131962A4245DEB7200B52538 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -137,6 +144,8 @@
 		1362B3E32457EEAF0092D879 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				139335C7245CB5A4008D9CE5 /* AuthService.swift */,
+				131962A2245DE88400B52538 /* UserService.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -293,12 +302,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				131962A3245DE88400B52538 /* UserService.swift in Sources */,
 				1362B3EF2457F2330092D879 /* NotififcationVC.swift in Sources */,
 				1362B3F12457F24B0092D879 /* ConversationVC.swift in Sources */,
 				139335C6245CA5AA008D9CE5 /* Constans.swift in Sources */,
 				1362B401245938C10092D879 /* Utilities.swift in Sources */,
 				1362B3EB2457F20E0092D879 /* FeedVC.swift in Sources */,
 				1362B3FE24592EE60092D879 /* RegistrationVC.swift in Sources */,
+				131962A5245DEB7200B52538 /* User.swift in Sources */,
+				139335C8245CB5A4008D9CE5 /* AuthService.swift in Sources */,
 				1362B3F32457FE0E0092D879 /* Extensions.swift in Sources */,
 				1362B3C72457EE5E0092D879 /* AppDelegate.swift in Sources */,
 				1362B3FC24592E320092D879 /* LoginVC.swift in Sources */,
