@@ -61,11 +61,17 @@ class MainTabController: UITabBarController {
     
     //MARK: - Selectors
     @objc func actionButtonTapped() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print("DEBUG : \(error.localizedDescription)")
-        }
+        guard let user = user else { return }
+        let controller = UploadTweetVC(user: user)
+        
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+//        do {
+//            try Auth.auth().signOut()
+//        } catch {
+//            print("DEBUG : \(error.localizedDescription)")
+//        }
     }
     
     //MARK: - Helpers
