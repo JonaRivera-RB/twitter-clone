@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 struct User {
     let fullname: String
@@ -14,6 +15,10 @@ struct User {
     let username: String
     var profileImageUrl: URL?
     let uid: String
+    var isFollowed = false
+    var status: userRelationStatus?
+    
+    var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
     
     init(uid: String, dictionary: [String: AnyObject]) {
         self.uid = uid
@@ -27,4 +32,9 @@ struct User {
             self.profileImageUrl = url
         }
     }
+}
+
+struct userRelationStatus {
+    var following: Int
+    var followers: Int
 }
