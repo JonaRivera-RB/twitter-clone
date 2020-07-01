@@ -10,6 +10,13 @@ import UIKit
 
 class TweetHeader: UICollectionReusableView {
     
+    
+    var tweet: Tweet? {
+        didSet {
+            configure()
+        }
+    }
+    
     //MARK: - Properties
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
@@ -67,22 +74,8 @@ class TweetHeader: UICollectionReusableView {
         return button
     }()
     
-    private lazy var likesLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.text = "0 likes"
-        
-        return label
-    }()
-    
-    
-    private lazy var retweetsLabel: UILabel = {
-           let label = UILabel()
-           label.font = UIFont.systemFont(ofSize: 14)
-           label.text = "0 retweets"
-           
-           return label
-       }()
+    private lazy var likesLabel = UILabel()
+    private lazy var retweetsLabel = UILabel()
     
     private lazy var statsView: UIView = {
         let view = UIView()
@@ -107,6 +100,31 @@ class TweetHeader: UICollectionReusableView {
         divider2.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingLeft: 8, height: 1)
         return view
     }()
+    
+    private lazy var commentButton: UIButton = {
+        let button = createButton(withImage: "comment")
+        button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var retweetButton: UIButton = {
+        let button = createButton(withImage: "retweet")
+        button.addTarget(self, action: #selector(handleRetweetTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var likeButton: UIButton = {
+        let button = createButton(withImage: "like")
+        button.addTarget(self, action: #selector(handleLikeTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var shareButton: UIButton = {
+        let button = createButton(withImage: "share")
+        button.addTarget(self, action: #selector(handleShareTapped), for: .touchUpInside)
+        return button
+    }()
+    
     
     //MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -134,6 +152,13 @@ class TweetHeader: UICollectionReusableView {
         addSubview(statsView)
         statsView.anchor(top: dateLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 20, height: 40)
         
+        let stackButtons = UIStackView(arrangedSubviews: [commentButton, retweetButton, likeButton, shareButton])
+        stackButtons.spacing = 72
+        
+        addSubview(stackButtons)
+        stackButtons.centerX(inView: self)
+        stackButtons.anchor(bottom: bottomAnchor, paddingBottom: 8)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -147,5 +172,45 @@ class TweetHeader: UICollectionReusableView {
     
     @objc func showActionSheet() {
         
+    }
+    
+    @objc func handleCommentTapped() {
+        
+    }
+    
+    @objc func handleRetweetTapped() {
+        
+    }
+    
+    @objc func handleLikeTapped() {
+        
+    }
+    
+    @objc func handleShareTapped() {
+        
+    }
+    
+    private func createButton(withImage image: String) -> UIButton {
+        
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: image), for: .normal)
+        button.tintColor = .darkGray
+        button.setDimensions(width: 20, height: 20)
+        
+        return button
+    }
+    
+    private func configure() {
+        guard let tweet = tweet else { return }
+        
+        let viewModel = TweetViewModel(tweet: tweet)
+        
+        captionLabel.text = tweet.caption
+        fullnameLabel.text = tweet.user.fullname
+        usernameLabel.text = viewModel.userNameText
+        dateLabel.text = viewModel.headerTimestamp
+        retweetsLabel.attributedText = viewModel.retweetsAttributedString
+        likesLabel.attributedText = viewModel.likesAttributedString
+        profileImageView.sd_setImage(with: viewModel.profileImageURL)
     }
 }
