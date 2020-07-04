@@ -157,7 +157,7 @@ class TweetHeader: UICollectionReusableView {
         
         addSubview(stackButtons)
         stackButtons.centerX(inView: self)
-        stackButtons.anchor(bottom: bottomAnchor, paddingBottom: 8)
+        stackButtons.anchor(top: statsView.bottomAnchor, paddingTop: 16)
         
     }
     

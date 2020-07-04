@@ -16,6 +16,11 @@ class TweetController: UICollectionViewController {
 
     //MARK: - Properties
     private var tweet: Tweet
+    private var replies = [Tweet]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     //MARK: - Lifecycle
     init(tweet: Tweet) {
@@ -32,13 +37,23 @@ class TweetController: UICollectionViewController {
         super.viewDidLoad()
         
         configureCollectionView()
+        fetchReplies()
     }
     
+    //MARK: - API
+    func fetchReplies() {
+        TweetService.shared.fetchReplies(fotTweet: tweet) { tweet in
+            self.replies = tweet
+        }
+    }
+    
+    //MARK: - Helpers
     private func configureCollectionView() {
-        navigationController?.navigationBar.barStyle = .default
-         navigationController?.navigationBar.isHidden = false
+        //navigationController?.navigationBar.barStyle = .default
+        //navigationController?.navigationBar.isHidden = false
+        
         collectionView.backgroundColor = .white
-        collectionView.contentInsetAdjustmentBehavior = .never
+        //collectionView.contentInsetAdjustmentBehavior = .never
         
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.register(TweetHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseIdentifierHeader)
@@ -50,13 +65,13 @@ class TweetController: UICollectionViewController {
 extension TweetController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return replies.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
           
           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
-          //cell.tweet = tweets[indexPath.row]
+          cell.tweet = replies[indexPath.row]
           return cell
       }
     
