@@ -13,9 +13,11 @@ private let reuseIdentifier = "tweetCell"
 private let reuseIdentifierHeader = "tweetHeader"
 
 class TweetController: UICollectionViewController {
-
+    
     //MARK: - Properties
     private var tweet: Tweet
+    private var actionSheetLauncher: ActionSheetLauncher!
+    
     private var replies = [Tweet]() {
         didSet {
             collectionView.reloadData()
@@ -25,7 +27,6 @@ class TweetController: UICollectionViewController {
     //MARK: - Lifecycle
     init(tweet: Tweet) {
         self.tweet = tweet
-        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -58,6 +59,12 @@ class TweetController: UICollectionViewController {
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         collectionView.register(TweetHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: reuseIdentifierHeader)
     }
+    
+    fileprivate func showActionSheet(forUser user: User) {
+        actionSheetLauncher = ActionSheetLauncher(user: user)
+        self.actionSheetLauncher.delegate = self
+        actionSheetLauncher.show()
+    }
 }
 
 
@@ -69,11 +76,11 @@ extension TweetController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-          
-          let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
-          cell.tweet = replies[indexPath.row]
-          return cell
-      }
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
+        cell.tweet = replies[indexPath.row]
+        return cell
+    }
     
 }
 
@@ -95,10 +102,52 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: - UICollectionViewDelegate
+
 extension TweetController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifierHeader, for: indexPath) as! TweetHeader
         header.tweet = tweet
+        header.delegate = self
         return header
+    }
+}
+
+//MARK: - TweetHeaderDelegate
+
+extension TweetController: TweetHeaderDelegate {
+    
+    func showActionSheet() {
+        if tweet.user.isCurrentUser {
+            showActionSheet(forUser: tweet.user)
+        }else {
+            UserService.shared.checkIfTheUserIsFollowed(uid: tweet.user.uid) { isFollowed in
+                var user = self.tweet.user
+                user.isFollowed = isFollowed
+                self.showActionSheet(forUser: user)
+            }
+        }
+        
+    }
+}
+
+//MARK: - ActionSheetLauncherDelegate
+
+extension TweetController: ActionSheetLauncherDelegate {
+    func didSelect(option: ActionsheetOptions) {
+        switch option {
+            
+        case .follow(let user):
+            UserService.shared.followUser(uid: user.uid) { (err, ref) in
+                print("did follow user \(user.username)")
+            }
+        case .unfollow(let user):
+            UserService.shared.unfollowUser(uid: user.uid) { (err, ref) in
+                print("did unfollow user \(user.username)")
+            }
+        case .report:
+            print("did report user")
+        case .delete:
+            print("did delete user")
+        }
     }
 }
