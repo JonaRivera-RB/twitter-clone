@@ -45,9 +45,19 @@ class FeedVC: UICollectionViewController {
     private func getchTweets() {
         TweetService.shared.fetchTweets { tweets in
             self.tweets = tweets
+            self.checkIfUserLikedTweets(tweets)
         }
     }
     
+    private func checkIfUserLikedTweets(_ tweets: [Tweet]) {
+        for (index, tweet) in tweets.enumerated() {
+            TweetService.shared.checkIfUserLiketweet(tweet: tweet) { didLike in
+                guard didLike ==  true else { return }
+                
+                self.tweets[index].didLike = true
+            }
+        }
+    }
     //MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
@@ -111,6 +121,17 @@ extension FeedVC: UICollectionViewDelegateFlowLayout {
 
 //MARK: - TweetCellDelegate
 extension FeedVC: TweetCellDelegate {
+    func handleLikeTapped(_ cell: TweetCell) {
+        guard let tweet = cell.tweet else { return }
+        
+        TweetService.shared.likeTweet(fotTweet: tweet) { (err, ref) in
+            cell.tweet?.didLike.toggle()
+            
+            let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
+            cell.tweet?.likes = likes
+        }
+    }
+    
     func handleReplyTapped(_ cell: TweetCell) {
         guard let tweet = cell.tweet else { return }
         let controller = UploadTweetVC(user: tweet.user, config: .reply(tweet))
