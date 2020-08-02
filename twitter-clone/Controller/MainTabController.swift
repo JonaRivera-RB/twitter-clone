@@ -7,10 +7,20 @@
 //
 
 import UIKit
+import Firebase
 
 class MainTabController: UITabBarController {
 
     //MARK: - Properties
+    
+    var user: User? {
+        didSet {
+            guard let nav = viewControllers?[0] as? UINavigationController else { return }
+            guard let feed = nav.viewControllers.first as? FeedVC else { return }
+            
+            feed.user = user
+        }
+    }
     let actionButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -24,13 +34,45 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViewController()
-        configureUI()
+        authenticateUserConfigureUI()
+    }
+    
+    
+    //MARK: - API
+    
+    func getUSerInfo() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        UserService.shared.fetchUser(uid: uid) { user in
+            self.user = user
+        }
+    }
+    func authenticateUserConfigureUI() {
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: LoginVC())
+                nav.modalPresentationStyle = .fullScreen
+                self.present(nav, animated: true, completion: nil)
+            }
+        }else {
+            configureViewController()
+            configureUI()
+            getUSerInfo()
+        }
     }
     
     //MARK: - Selectors
     @objc func actionButtonTapped() {
-        print(124)
+        guard let user = user else { return }
+        let controller = UploadTweetVC(user: user, config: .tweet)
+        
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
+//        do {
+//            try Auth.auth().signOut()
+//        } catch {
+//            print("DEBUG : \(error.localizedDescription)")
+//        }
     }
     
     //MARK: - Helpers
@@ -41,7 +83,7 @@ class MainTabController: UITabBarController {
     }
     
     private func configureViewController() {
-        let feed = FeedVC()
+        let feed = FeedVC(collectionViewLayout: UICollectionViewFlowLayout())
         let nav1 = templateNavigationController(image: UIImage(named: "home_unselected"), rootViewController: feed)
         
         let explore = ExploreVC()
