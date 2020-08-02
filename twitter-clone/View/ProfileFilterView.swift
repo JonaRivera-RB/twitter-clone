@@ -11,7 +11,7 @@ import UIKit
 private let reuseIdentifier = "profileFilterCell"
 
 protocol ProfileFilterViewDelegate: class {
-    func filterView(_ view: ProfileFilterView, didSelect indexPath: IndexPath)
+    func filterView(_ view: ProfileFilterView, didSelect index: Int)
 }
 
 class ProfileFilterView: UIView {
@@ -24,6 +24,12 @@ class ProfileFilterView: UIView {
         cv.delegate = self
         cv.dataSource = self
         return cv
+    }()
+    
+    private let underLlineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .twitterBlue
+        return view
     }()
     
     weak var delegate: ProfileFilterViewDelegate?
@@ -43,6 +49,14 @@ class ProfileFilterView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        addSubview(underLlineView)
+        underLlineView.anchor( left: leftAnchor, bottom: bottomAnchor, width: frame.width / 3,  height: 2)
+        
     }
     
     //MARK: - Helpers
@@ -78,7 +92,14 @@ extension ProfileFilterView: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegate
 extension ProfileFilterView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.filterView(self, didSelect: indexPath)
+        let cell = collectionView.cellForItem(at: indexPath)
+        let xPosition = cell?.frame.origin.x ?? 0
+        
+        UIView.animate(withDuration: 0.3) {
+            self.underLlineView.frame.origin.x = xPosition
+        }
+        
+        delegate?.filterView(self, didSelect: indexPath.row)
     }
 }
 

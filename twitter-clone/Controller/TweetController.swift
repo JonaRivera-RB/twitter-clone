@@ -41,6 +41,12 @@ class TweetController: UICollectionViewController {
         fetchReplies()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.barStyle = .default
+    }
+    
     //MARK: - API
     func fetchReplies() {
         TweetService.shared.fetchReplies(fotTweet: tweet) { tweet in
