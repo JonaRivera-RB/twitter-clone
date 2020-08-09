@@ -31,30 +31,35 @@ class FeedVC: UICollectionViewController {
         super.viewDidLoad()
         
         configureUI()
-        getchTweets()
+        fetchTweets()
     }
     
-     override func viewWillAppear(_ animated: Bool) {
-         super.viewWillAppear(animated)
-         
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         navigationController?.navigationBar.barStyle = .default
-         navigationController?.navigationBar.isHidden = false
-     }
+        navigationController?.navigationBar.isHidden = false
+    }
     
     //MARK: - API
-    private func getchTweets() {
+    private func fetchTweets() {
+        collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweets { tweets in
-            self.tweets = tweets
-            self.checkIfUserLikedTweets(tweets)
+            self.tweets = tweets.sorted(by: { $0.timestamp > $1.timestamp })
+            self.checkIfUserLikedTweets(self.tweets)
+            
+            self.collectionView.refreshControl?.endRefreshing()
         }
     }
     
     private func checkIfUserLikedTweets(_ tweets: [Tweet]) {
-        for (index, tweet) in tweets.enumerated() {
+        self.tweets.forEach { tweet in
             TweetService.shared.checkIfUserLiketweet(tweet: tweet) { didLike in
                 guard didLike ==  true else { return }
                 
-                self.tweets[index].didLike = true
+                if let index = self.tweets.firstIndex(where: { $0.tweetID == tweet.tweetID }) {
+                    self.tweets[index].didLike = true
+                }
             }
         }
     }
@@ -72,6 +77,10 @@ class FeedVC: UICollectionViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageView
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     private func configureLeftBarButton() {
@@ -84,6 +93,11 @@ class FeedVC: UICollectionViewController {
         
         profileImageView.sd_setImage(with: user.profileImageUrl, completed: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
+    }
+    
+    //MARK: - Selectors
+    @objc func handleRefreshControl() {
+        fetchTweets()
     }
 }
 
