@@ -17,9 +17,9 @@ class EditProfileCell: UITableViewCell {
     //MARK: - Properties
     weak var delegate: EditProfileCellDelegate?
     
-    var viewModel: EditProfileViewModel? {
-        didSet { configure() }
-    }
+//    var viewModel: EditProfileViewModel? {
+//        didSet { configure() }
+//    }
     
     //MARK: - Lyfecicle
     

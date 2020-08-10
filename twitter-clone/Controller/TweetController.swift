@@ -121,6 +121,14 @@ extension TweetController {
 //MARK: - TweetHeaderDelegate
 
 extension TweetController: TweetHeaderDelegate {
+    func handleFetchUser(withUsername username: String) {
+        UserService.shared.fetchUser(withusername: username) { user in
+            
+            let controller = ProfileVC(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
     
     func showActionSheet() {
         if tweet.user.isCurrentUser {
