@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 enum UploadTweetConfiguration {
     case tweet
@@ -46,11 +47,11 @@ class UploadTweetVC: UIViewController {
         return iv
     }()
     
-    private lazy var replyLabel: UILabel = {
-        let label = UILabel()
+    private lazy var replyLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "replying to @spiderman"
+        label.mentionColor = .twitterBlue
         label.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
         return label
     }()
@@ -72,7 +73,7 @@ class UploadTweetVC: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        // Do any additional setup after loading the view.
+        configureMentionHandle()
     }
     
     // MARK: - Selectors
@@ -86,7 +87,7 @@ class UploadTweetVC: UIViewController {
             }
             
             if case .reply(let tweet) = self.config {
-                NotificationService.shared.uploadNotification(type: .reply, tweet: tweet)
+                NotificationService.shared.uploadNotification(toUser: self.user, type: .reply, tweetID: tweet.tweetID)
             }
             
             self.dismiss(animated: true, completion: nil)
@@ -129,5 +130,11 @@ class UploadTweetVC: UIViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: actionButton)
+    }
+    
+    func configureMentionHandle() {
+        replyLabel.handleMentionTap { mention in
+            print("DEBUG: Mentioned user is \(mention)")
+        }
     }
 }
