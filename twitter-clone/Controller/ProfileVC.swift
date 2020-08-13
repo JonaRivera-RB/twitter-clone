@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier = "tweetCell"
 private let reuseIdentifierHeader = "profileHeader"
@@ -170,6 +171,7 @@ extension ProfileVC: ProfileHeaderDelegate {
         
         if user.isCurrentUser {
             let controller = EditProfileController(user: user)
+            controller.delegate = self
             let nav = UINavigationController(rootViewController: controller)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
@@ -186,7 +188,7 @@ extension ProfileVC: ProfileHeaderDelegate {
                 self.user.isFollowed = true
                 self.collectionView.reloadData()
                 
-                NotificationService.shared.uploadNotification(type: .follow, tweet: nil, user: self.user)
+                NotificationService.shared.uploadNotification(toUser: self.user, type: .follow, tweetID: nil)
             }
         }
     }
@@ -194,4 +196,18 @@ extension ProfileVC: ProfileHeaderDelegate {
     func handleDismiss() {
         navigationController?.popViewController(animated: true)
     }
+}
+
+extension ProfileVC: EditProfileControllerDelegate {
+    func handleLogout() {
+        do {
+            try Auth.auth().signOut()
+            let nav = UINavigationController(rootViewController: LoginVC())
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true, completion: nil)
+        }catch let error  {
+            print("error in try logout: \(error.localizedDescription)")
+        }
+    }
+    
 }

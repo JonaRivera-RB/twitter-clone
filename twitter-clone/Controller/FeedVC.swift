@@ -153,7 +153,8 @@ extension FeedVC: TweetCellDelegate {
             cell.tweet?.likes = likes
             
             guard !tweet.didLike else { return }
-            NotificationService.shared.uploadNotification(type: .like, tweet: tweet)
+            guard let user = self.user else { return }
+            NotificationService.shared.uploadNotification(toUser: user, type: .like, tweetID: tweet.tweetID)
         }
     }
     
